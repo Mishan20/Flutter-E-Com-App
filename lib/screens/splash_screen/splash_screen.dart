@@ -10,49 +10,117 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _rotationAnimation;
+  late Animation<Color?> _colorAnimation;
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () {
-      // ignore: use_build_context_synchronously
-      Navigator.push(context, CupertinoPageRoute(builder: (context) {
-        return const SigninPage();
-      }));
+
+    // Animation controller for 4 seconds
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    );
+
+    // Rotate the image
+    _rotationAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    // Text color transition from black to blue
+    _colorAnimation = ColorTween(begin: Colors.black87, end: Colors.blueAccent)
+        .animate(_controller);
+
+    // Start the animation
+    _controller.forward();
+
+    // After animation ends, redirect to SigninPage
+    Future.delayed(const Duration(seconds: 5), () {
+      Navigator.pushReplacement(
+        // ignore: use_build_context_synchronously
+        context,
+        CupertinoPageRoute(
+          builder: (context) => const SigninPage(),
+        ),
+      );
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: Stack(children: [
-        Align(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/splash/splash.png",
-                width: size.width * 0.5,
-                height: size.width * 0.5,
+      body: Stack(
+        children: [
+          // Background gradient decoration
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.white, Colors.white],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-              Text(
-                "BMW Cars",
-                style: GoogleFonts.poppins(
-                    fontSize: 30, fontWeight: FontWeight.w600),
-              )
-            ],
+            ),
           ),
-        ),
-        const Align(
-          alignment: Alignment.bottomCenter,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: CupertinoActivityIndicator(),
+          Align(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // BMW logo with rotation animation
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: _rotationAnimation.value * 6.28, // Full circle
+                      child: Image.asset(
+                        "assets/images/splash/splash.png",
+                        width: size.width * 0.5,
+                        height: size.width * 0.5,
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 20),
+                // BMW Cars text with color animation
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Text(
+                      "BMW Cars",
+                      style: GoogleFonts.poppins(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: _colorAnimation.value,
+                        letterSpacing: 1.2,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
-        )
-      ]),
+          // Activity Indicator with extra padding
+          const Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 40.0),
+              child: CupertinoActivityIndicator(radius: 20),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
