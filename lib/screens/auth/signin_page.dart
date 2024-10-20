@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mi_store/screens/auth/forgot_password.dart';
+import 'package:mi_store/screens/home/homepage.dart';
 
 import '../../components/custom_buttons/custom_button1.dart';
 import '../../components/custom_text/custom_poppins_text.dart';
@@ -116,7 +117,13 @@ class _SigninPageState extends State<SigninPage> {
                         const SizedBox(height: 10),
                         // Sign In Button
                         CustomButton1(
-                          ontap: () {},
+                          ontap: () {
+                            Navigator.push(context, CupertinoPageRoute(
+                              builder: (context) {
+                                return const HomePage();
+                              },
+                            ));
+                          },
                           size: size,
                           text: 'Sign In',
                           colors: [
