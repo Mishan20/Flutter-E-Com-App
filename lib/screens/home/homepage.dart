@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 
 import '../../models/car_model.dart';
+import '../product_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -182,44 +183,56 @@ class _HomePageState extends State<HomePage> {
                   childAspectRatio: 1,
                 ),
                 itemBuilder: (context, index) {
-                  return Container(
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Icon(
-                              Icons.favorite_border,
-                              color: Colors.grey.shade700,
-                            ),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductDetails(
+                            car: cars[index],
                           ),
-                          Image.network(cars[index].image),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                CustomPoppinsText(
-                                  text: cars[index].name,
-                                  fontSize: 12,
-                                  textOverflow: TextOverflow.ellipsis,
-                                ),
-                                CustomPoppinsText(
-                                  text: "\$ ${cars[index].price}",
-                                  fontSize: 12,
-                                  textOverflow: TextOverflow.ellipsis,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ],
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(15)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Icon(
+                                Icons.favorite_border,
+                                color: Colors.grey.shade700,
+                              ),
                             ),
-                          ),
-                        ],
+                            Image.network(cars[index].image),
+                            Align(
+                              alignment: Alignment.topLeft,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CustomPoppinsText(
+                                    text: cars[index].name,
+                                    fontSize: 12,
+                                    textOverflow: TextOverflow.ellipsis,
+                                  ),
+                                  CustomPoppinsText(
+                                    text: "\$ ${cars[index].price}",
+                                    fontSize: 12,
+                                    textOverflow: TextOverflow.ellipsis,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
