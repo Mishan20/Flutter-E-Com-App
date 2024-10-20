@@ -62,125 +62,89 @@ class _HomePageState extends State<HomePage> {
       price: 950000,
       type: "Electric",
     ),
-    Car(
-      description:
-          "The Lexus ES is a series of mid-size luxury cars marketed by Lexus, the luxury division of Toyota.",
-      id: 5,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Lexus ES",
-      price: 870000,
-      type: "Sedan",
-    ),
-    Car(
-      description:
-          "The Jaguar XE is a rear or all-wheel-drive compact executive sedan produced by Jaguar.",
-      id: 6,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Jaguar XE",
-      price: 860000,
-      type: "Sedan",
-    ),
-    Car(
-      description:
-          "The Porsche Panamera is a full-sized luxury vehicle manufactured by the German automobile manufacturer Porsche.",
-      id: 7,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Porsche Panamera",
-      price: 1200000,
-      type: "Luxury",
-    ),
-    Car(
-      description:
-          "The Volvo S60 is a compact executive car manufactured and marketed by Volvo since 2000.",
-      id: 8,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Volvo S60",
-      price: 830000,
-      type: "Sedan",
-    ),
-    Car(
-      description:
-          "The Genesis G70 is a compact executive car manufactured by the South Korean luxury brand Genesis.",
-      id: 9,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Genesis G70",
-      price: 890000,
-      type: "Sedan",
-    ),
-    Car(
-      description:
-          "The Alfa Romeo Giulia is a compact executive car produced by the Italian car manufacturer Alfa Romeo.",
-      id: 10,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Alfa Romeo Giulia",
-      price: 880000,
-      type: "Sedan",
-    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.blue, Colors.purple],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.menu, color: Colors.white),
+          onPressed: () {},
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.white),
+            onPressed: () {},
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+          padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(
-                    Icons.menu,
-                    color: Colors.black,
-                  ),
-                  Icon(Icons.search, color: Colors.black),
-                ],
-              ),
-              const CustomPoppinsText(text: "Hello Ishan", fontSize: 22),
+              const CustomPoppinsText(
+                  text: "Hello Ishan", fontSize: 22, color: Colors.black87),
               CustomPoppinsText(
-                text: "Lets Start Shopping....",
-                fontSize: 15,
-                color: Colors.grey.shade700,
+                text: "Let's Start Shopping...",
+                fontSize: 16,
+                color: Colors.grey.shade600,
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 15),
               CarouselSlider(
-                options: CarouselOptions(height: 250.0, autoPlay: true),
+                options: CarouselOptions(
+                  height: 250.0,
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  autoPlayInterval: const Duration(seconds: 3),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                ),
                 items: offers.map((i) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            image: DecorationImage(
-                                image: NetworkImage(i), fit: BoxFit.cover)),
-                      );
-                    },
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          // ignore: deprecated_member_use
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 3,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                      image: DecorationImage(
+                        image: NetworkImage(i),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   );
                 }).toList(),
               ),
-              const SizedBox(
-                height: 15,
-              ),
+              const SizedBox(height: 20),
               GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: cars.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 1,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                  childAspectRatio: 0.8,
                 ),
                 itemBuilder: (context, index) {
                   return GestureDetector(
@@ -195,49 +159,67 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                     child: Container(
-                      height: 100,
-                      width: 100,
                       decoration: BoxDecoration(
-                          color: Colors.grey.shade300,
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Icon(
+                        gradient: LinearGradient(
+                          colors: [Colors.white, Colors.grey.shade200],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            // ignore: deprecated_member_use
+                            color: Colors.black.withOpacity(0.1),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              icon: Icon(
                                 Icons.favorite_border,
                                 color: Colors.grey.shade700,
                               ),
+                              onPressed: () {},
                             ),
-                            Image.network(cars[index].image),
-                            Align(
-                              alignment: Alignment.topLeft,
+                          ),
+                          Expanded(
+                            child: Image.network(cars[index].image),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CustomPoppinsText(
                                     text: cars[index].name,
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     textOverflow: TextOverflow.ellipsis,
                                   ),
                                   CustomPoppinsText(
-                                    text: "\$ ${cars[index].price}",
-                                    fontSize: 12,
+                                    text: "\$${cars[index].price}",
+                                    fontSize: 14,
                                     textOverflow: TextOverflow.ellipsis,
                                     fontWeight: FontWeight.w700,
+                                    color: Colors.blue,
                                   ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   );
                 },
-              )
+              ),
             ],
           ),
         ),
