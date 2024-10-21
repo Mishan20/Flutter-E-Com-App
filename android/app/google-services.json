@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "11106684968",
+    "project_id": "mi-store-app",
+    "storage_bucket": "mi-store-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:11106684968:android:330b04bc4e9ecdde52a51d",
+        "android_client_info": {
+          "package_name": "com.mistore.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZYegTFzmkLBK9nlpospBhzOJ3rhMVVtI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
