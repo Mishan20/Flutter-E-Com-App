@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mi_store/screens/auth/signin_page.dart';
+import 'package:logger/web.dart';
+import 'package:mi_store/controllers/auth_controller.dart';
+import 'package:mi_store/screens/auth/signup_page.dart';
+import 'package:mi_store/screens/home/homepage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -39,15 +43,7 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
 
     // After animation ends, redirect to SigninPage
-    Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        // ignore: use_build_context_synchronously
-        context,
-        CupertinoPageRoute(
-          builder: (context) => const SigninPage(),
-        ),
-      );
-    });
+    AuthController.checkAuthState(context);
   }
 
   @override

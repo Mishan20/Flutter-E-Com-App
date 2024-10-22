@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mi_store/controllers/auth_controller.dart';
 
 import '../../components/custom_buttons/custom_button1.dart';
 import '../../components/custom_text/custom_poppins_text.dart';
@@ -106,7 +107,21 @@ class _SignupPageState extends State<SignupPage> {
                         const SizedBox(height: 10),
                         // Sign-Up Button
                         CustomButton1(
-                          ontap: () {},
+                          ontap: () {
+                            if (_emailController.text.isEmpty ||
+                                _passwordController.text.isEmpty ||
+                                _confirmPasswordController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Please fill all the fields"),
+                                ),
+                              );
+                            } else {
+                              AuthController.createUserAccount(
+                                  emailAddress: _emailController.text,
+                                  password: _passwordController.text);
+                            }
+                          },
                           size: size,
                           text: 'Sign Up',
                           colors: [
