@@ -4,7 +4,7 @@ import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 import 'package:mi_store/models/car_model.dart';
 
 import '../components/custom_buttons/custom_button1.dart';
-import 'cart/cart.dart';
+import 'home/cart/cart.dart';
 
 class ProductDetails extends StatefulWidget {
   final Car car;

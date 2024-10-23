@@ -108,7 +108,7 @@ class _SignupPageState extends State<SignupPage> {
                               ontap: () {
                                 Provider.of<SignUpProvider>(context,
                                         listen: false)
-                                    .signUpUser(context);
+                                    .signUpUser();
                               },
                               size: size,
                               text: 'Create Account',

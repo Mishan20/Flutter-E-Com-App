@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:mi_store/screens/home/main_screen.dart';
 import 'package:mi_store/utils/navigator_utils.dart';
 
 import '../screens/auth/signup_page.dart';
-import '../screens/home/homepage.dart';
 
 class AuthController {
 //Check Current User Auth State
@@ -18,7 +18,7 @@ class AuthController {
         } else {
           Logger().i('User is signed in!');
           // ignore: use_build_context_synchronously
-          CustomNavigator.goTo(context, const HomePage());
+          CustomNavigator.goTo(context, const MainScreen());
         }
       });
     });

@@ -13,7 +13,7 @@ class SignUpProvider extends ChangeNotifier {
   TextEditingController get confirmPasswordController =>
       _confirmPasswordController;
 
-  Future<void> signUpUser(BuildContext context) async {
+  Future<void> signUpUser() async {
     if (_emailController.text.isEmpty) {
       Logger().e("Email is empty");
     } else if (_passwordController.text.isEmpty) {
@@ -24,8 +24,17 @@ class SignUpProvider extends ChangeNotifier {
       Logger().e("Passwords don't match");
     } else {
       AuthController.createUserAccount(
-          emailAddress: _emailController.text,
-          password: _passwordController.text);
+        emailAddress: _emailController.text,
+        password: _passwordController.text,
+      ).then((value) {
+        clearTextFields();
+      });
     }
+  }
+
+  void clearTextFields() {
+    _emailController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
   }
 }

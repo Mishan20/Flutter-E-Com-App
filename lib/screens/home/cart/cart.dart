@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_buttons/custom_button1.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 
-import '../../models/car_model.dart';
+import '../../../models/car_model.dart';
 
 class MyCart extends StatefulWidget {
   const MyCart({super.key});
