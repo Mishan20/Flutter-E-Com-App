@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mi_store/providers/signin_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/custom_buttons/custom_button1.dart';
 import '../../components/custom_text/custom_poppins_text.dart';
@@ -13,7 +15,6 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +38,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
                         // ignore: deprecated_member_use
-                        Colors.black.withOpacity(0.5), BlendMode.darken),
+                        Colors.black.withOpacity(0.5),
+                        BlendMode.darken),
                   ),
                 ),
                 child: const Center(
@@ -89,61 +91,62 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ListView(
-                      children: [
-                        const CustomPoppinsText(
-                          text: "Enter your registered email address",
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey,
-                        ),
-                        const SizedBox(height: 20),
-                        // Email TextField
-                        CustomTextField(
-                          controller: _emailController,
-                          text: 'Email',
-                          prefixIcon: Icons.email,
-                        ),
-                        const SizedBox(height: 20),
-                        // Reset Password Button
-                        CustomButton1(
-                          ontap: () {
-                            // Add reset password logic here
-                          },
-                          size: size,
-                          text: 'Reset Password',
-                          colors: [
-                            Colors.amber.shade600,
-                            Colors.amber.shade800
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                      padding: const EdgeInsets.all(16.0),
+                      child: Consumer<SigninProvider>(builder: (context, value, child) {
+                        return ListView(
                           children: [
-                            CustomPoppinsText(
-                              text: "Remembered your password?",
-                              fontSize: 14,
+                            const CustomPoppinsText(
+                              text: "Enter your registered email address",
+                              fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: Colors.grey.shade600,
+                              color: Colors.grey,
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
+                            const SizedBox(height: 20),
+                            // Email TextField
+                            CustomTextField(
+                              controller: value.recoveryEmailController,
+                              text: 'Email',
+                              prefixIcon: Icons.email,
+                            ),
+                            const SizedBox(height: 20),
+                            // Reset Password Button
+                            CustomButton1(
+                              ontap: () {
+                                Provider.of<SigninProvider>(context, listen: false).sendPasswordResetEmail(context);
                               },
-                              child: CustomPoppinsText(
-                                text: " Sign In",
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.amber.shade800,
-                              ),
+                              size: size,
+                              text: 'Reset Password',
+                              colors: [
+                                Colors.amber.shade600,
+                                Colors.amber.shade800
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomPoppinsText(
+                                  text: "Remembered your password?",
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey.shade600,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: CustomPoppinsText(
+                                    text: " Sign In",
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.amber.shade800,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
-                        ),
-                      ],
-                    ),
-                  ),
+                        );
+                      })),
                 ),
               ),
             ],

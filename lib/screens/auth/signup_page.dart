@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:mi_store/controllers/auth_controller.dart';
+import 'package:mi_store/providers/signup_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/custom_buttons/custom_button1.dart';
 import '../../components/custom_text/custom_poppins_text.dart';
@@ -16,11 +17,6 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -81,125 +77,120 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ListView(
-                      children: [
-                        // Email TextField
-                        CustomTextField(
-                          controller: _emailController,
-                          text: 'Email',
-                          prefixIcon: Icons.email,
-                        ),
-                        // Password TextField
-                        CustomTextField(
-                          controller: _passwordController,
-                          text: 'Password',
-                          isPassword: true,
-                          prefixIcon: Icons.password,
-                        ),
-                        // Confirm Password TextField
-                        CustomTextField(
-                          controller: _confirmPasswordController,
-                          text: 'Confirm Password',
-                          isPassword: true,
-                          prefixIcon: Icons.password,
-                        ),
-                        const SizedBox(height: 10),
-                        // Sign-Up Button
-                        CustomButton1(
-                          ontap: () {
-                            if (_emailController.text.isEmpty ||
-                                _passwordController.text.isEmpty ||
-                                _confirmPasswordController.text.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Please fill all the fields"),
+                      padding: const EdgeInsets.all(16.0),
+                      child: Consumer<SignUpProvider>(
+                          builder: (context, value, child) {
+                        return ListView(
+                          children: [
+                            // Email TextField
+                            CustomTextField(
+                              controller: value.emailController,
+                              text: 'Email',
+                              prefixIcon: Icons.email,
+                            ),
+                            // Password TextField
+                            CustomTextField(
+                              controller: value.passwordController,
+                              text: 'Password',
+                              isPassword: true,
+                              prefixIcon: Icons.password,
+                            ),
+                            // Confirm Password TextField
+                            CustomTextField(
+                              controller: value.confirmPasswordController,
+                              text: 'Confirm Password',
+                              isPassword: true,
+                              prefixIcon: Icons.password,
+                            ),
+                            const SizedBox(height: 10),
+                            // Sign-Up Button
+                            CustomButton1(
+                              ontap: () {
+                                Provider.of<SignUpProvider>(context,
+                                        listen: false)
+                                    .signUpUser(context);
+                              },
+                              size: size,
+                              text: 'Create Account',
+                              colors: [
+                                Colors.amber.shade600,
+                                Colors.amber.shade800
+                              ],
+                            ),
+                            // Sign-In Button
+                            CustomButton1(
+                              ontap: () {
+                                Navigator.push(context, CupertinoPageRoute(
+                                  builder: (context) {
+                                    return const SigninPage();
+                                  },
+                                ));
+                              },
+                              size: size,
+                              text: 'Sign In',
+                              colors: [
+                                Colors.grey.shade600,
+                                Colors.grey.shade800
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            // Social Sign-Up Text
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomPoppinsText(
+                                  text: "Or sign up with",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey.shade600,
                                 ),
-                              );
-                            } else {
-                              AuthController.createUserAccount(
-                                  emailAddress: _emailController.text,
-                                  password: _passwordController.text);
-                            }
-                          },
-                          size: size,
-                          text: 'Sign Up',
-                          colors: [
-                            Colors.amber.shade600,
-                            Colors.amber.shade800
-                          ],
-                        ),
-                        // Sign-In Button
-                        CustomButton1(
-                          ontap: () {
-                            Navigator.push(context, CupertinoPageRoute(
-                              builder: (context) {
-                                return const SigninPage();
-                              },
-                            ));
-                          },
-                          size: size,
-                          text: 'Sign In',
-                          colors: [Colors.grey.shade600, Colors.grey.shade800],
-                        ),
-                        const SizedBox(height: 20),
-                        // Social Sign-Up Text
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomPoppinsText(
-                              text: "Or sign up with",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey.shade600,
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            // Social Media Icons
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Google
+                                GestureDetector(
+                                  onTap: () {
+                                    // Add Google sign-up functionality here
+                                  },
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.google,
+                                    size: 40,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                const SizedBox(width: 30),
+                                // Facebook
+                                GestureDetector(
+                                  onTap: () {
+                                    // Add Facebook sign-up functionality here
+                                  },
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.facebook,
+                                    size: 40,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                const SizedBox(width: 30),
+                                // GitHub
+                                GestureDetector(
+                                  onTap: () {
+                                    // Add GitHub sign-up functionality here
+                                  },
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.github,
+                                    size: 40,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
-                        ),
-                        const SizedBox(height: 15),
-                        // Social Media Icons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Google
-                            GestureDetector(
-                              onTap: () {
-                                // Add Google sign-up functionality here
-                              },
-                              child: const FaIcon(
-                                FontAwesomeIcons.google,
-                                size: 40,
-                                color: Colors.red,
-                              ),
-                            ),
-                            const SizedBox(width: 30),
-                            // Facebook
-                            GestureDetector(
-                              onTap: () {
-                                // Add Facebook sign-up functionality here
-                              },
-                              child: const FaIcon(
-                                FontAwesomeIcons.facebook,
-                                size: 40,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            const SizedBox(width: 30),
-                            // GitHub
-                            GestureDetector(
-                              onTap: () {
-                                // Add GitHub sign-up functionality here
-                              },
-                              child: const FaIcon(
-                                FontAwesomeIcons.github,
-                                size: 40,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                        );
+                      })),
                 ),
               ),
             ],

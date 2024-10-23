@@ -34,6 +34,23 @@ class AuthController {
     }
   }
 
+  // Sign In User Account
+  static Future<void> signInToAccount(
+      {required String emailAddress, required String password}) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: emailAddress, password: password);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Logger().e('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        Logger().e('Wrong password provided for that user.');
+      }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
   //Create Use Account with Email and Password
   static Future<void> createUserAccount(
       {required String emailAddress, required String password}) async {
@@ -53,6 +70,17 @@ class AuthController {
       } else if (e.code == 'operation-not-allowed') {
         Logger().e('Email & Password accounts are not enabled.');
       }
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  // send Password Reset Email
+  static Future<void> sendPasswordResetEmail(
+      {required String emailAddress}) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: emailAddress);
+      Logger().i('Password Reset Email Sent');
     } catch (e) {
       Logger().e(e);
     }

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mi_store/providers/signin_provider.dart';
 import 'package:mi_store/screens/auth/forgot_password.dart';
-import 'package:mi_store/screens/home/homepage.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/custom_buttons/custom_button1.dart';
 import '../../components/custom_text/custom_poppins_text.dart';
@@ -17,8 +18,6 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,128 +79,131 @@ class _SigninPageState extends State<SigninPage> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ListView(
-                      children: [
-                        // Email TextField
-                        CustomTextField(
-                          controller: _emailController,
-                          text: 'Email',
-                          prefixIcon: Icons.email,
-                        ),
-                        // Password TextField
-                        CustomTextField(
-                          controller: _passwordController,
-                          text: 'Password',
-                          isPassword: true,
-                          prefixIcon: Icons.password,
-                        ),
-                        // Forgot Password Link
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(context, CupertinoPageRoute(
-                                builder: (context) {
-                                  return const ForgotPassword();
+                      padding: const EdgeInsets.all(16.0),
+                      child: Consumer<SigninProvider>(
+                          builder: (context, value, child) {
+                        return ListView(
+                          children: [
+                            // Email TextField
+                            CustomTextField(
+                              controller: value.emailController,
+                              text: 'Email',
+                              prefixIcon: Icons.email,
+                            ),
+                            // Password TextField
+                            CustomTextField(
+                              controller: value.passwordController,
+                              text: 'Password',
+                              isPassword: true,
+                              prefixIcon: Icons.password,
+                            ),
+                            // Forgot Password Link
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, CupertinoPageRoute(
+                                    builder: (context) {
+                                      return const ForgotPassword();
+                                    },
+                                  ));
                                 },
-                              ));
-                            },
-                            child: CustomPoppinsText(
-                              text: "Forgot Password?",
-                              color: Colors.amber.shade800,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        // Sign In Button
-                        CustomButton1(
-                          ontap: () {
-                            Navigator.push(context, CupertinoPageRoute(
-                              builder: (context) {
-                                return const HomePage();
-                              },
-                            ));
-                          },
-                          size: size,
-                          text: 'Sign In',
-                          colors: [
-                            Colors.amber.shade600,
-                            Colors.amber.shade800
-                          ],
-                        ),
-                        // Create New Account Button
-                        CustomButton1(
-                          ontap: () {
-                            Navigator.push(context, CupertinoPageRoute(
-                              builder: (context) {
-                                return const SignupPage();
-                              },
-                            ));
-                          },
-                          size: size,
-                          text: 'Create New Account',
-                          colors: [Colors.grey.shade600, Colors.grey.shade800],
-                        ),
-                        const SizedBox(height: 20),
-                        // Social Login Section
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomPoppinsText(
-                              text: "Or sign in with",
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey.shade600,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 15),
-                        // Social Media Icons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Google
-                            GestureDetector(
-                              onTap: () {
-                                // Add Google login functionality here
-                              },
-                              child: const FaIcon(
-                                FontAwesomeIcons.google,
-                                size: 40,
-                                color: Colors.red,
+                                child: CustomPoppinsText(
+                                  text: "Forgot Password?",
+                                  color: Colors.amber.shade800,
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
-                            const SizedBox(width: 30),
-                            // Facebook
-                            GestureDetector(
-                              onTap: () {
-                                // Add Facebook login functionality here
-                              },
-                              child: const FaIcon(
-                                FontAwesomeIcons.facebook,
-                                size: 40,
-                                color: Colors.blue,
-                              ),
+                            const SizedBox(height: 10),
+                            // Sign In Button
+                            CustomButton1(
+                              ontap: () {
+                                Provider.of<SigninProvider>(context,
+                                        listen: false)
+                                    .signInUser(context);
+                              }, 
+                              size: size,
+                              text: 'Sign In',
+                              colors: [
+                                Colors.amber.shade600,
+                                Colors.amber.shade800
+                              ],
                             ),
-                            const SizedBox(width: 30),
-                            // GitHub
-                            GestureDetector(
-                              onTap: () {
-                                // Add GitHub login functionality here
+                            // Create New Account Button
+                            CustomButton1(
+                              ontap: () {
+                                Navigator.push(context, CupertinoPageRoute(
+                                  builder: (context) {
+                                    return const SignupPage();
+                                  },
+                                ));
                               },
-                              child: const FaIcon(
-                                FontAwesomeIcons.github,
-                                size: 40,
-                                color: Colors.black,
-                              ),
+                              size: size,
+                              text: 'Create New Account',
+                              colors: [
+                                Colors.grey.shade600,
+                                Colors.grey.shade800
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            // Social Login Section
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CustomPoppinsText(
+                                  text: "Or sign in with",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey.shade600,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            // Social Media Icons
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Google
+                                GestureDetector(
+                                  onTap: () {
+                                    // Add Google login functionality here
+                                  },
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.google,
+                                    size: 40,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                const SizedBox(width: 30),
+                                // Facebook
+                                GestureDetector(
+                                  onTap: () {
+                                    // Add Facebook login functionality here
+                                  },
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.facebook,
+                                    size: 40,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                const SizedBox(width: 30),
+                                // GitHub
+                                GestureDetector(
+                                  onTap: () {
+                                    // Add GitHub login functionality here
+                                  },
+                                  child: const FaIcon(
+                                    FontAwesomeIcons.github,
+                                    size: 40,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
-                        ),
-                      ],
-                    ),
-                  ),
+                        );
+                      })),
                 ),
               ),
             ],
