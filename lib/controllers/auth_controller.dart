@@ -98,13 +98,4 @@ class AuthController {
       return null;
     }
   }
-
-  // Update Profile
-  Future<void> updateProfile(String uid, String name) async {
-    try {
-      users.doc(uid).update({"name": name});
-    } catch (e) {
-      Logger().e(e);
-    }
-  }
 }

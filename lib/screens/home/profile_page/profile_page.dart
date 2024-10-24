@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_buttons/custom_button1.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 import 'package:mi_store/components/custom_textFiled/custom_textfield.dart';
-import 'package:mi_store/providers/profile_provider.dart';
 import 'package:mi_store/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -20,16 +19,26 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Center(
-      child: Consumer<ProfileProvider>(builder: (context, value, child) {
+      child: Consumer<UserProvider>(builder: (context, value, child) {
         return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.network(
-              Provider.of<UserProvider>(context).userData!.userImage,
-              width: 100,
-              height: 100,
-            ),
+            InkWell(
+                onTap: () {
+                  value.pickImage();
+                },
+                // ignore: unrelated_type_equality_checks
+                child: value.image.path != ""
+                    ? CircleAvatar(
+                        radius: 60,
+                        backgroundImage: FileImage(value.image),
+                      )
+                    : CircleAvatar(
+                        radius: 60,
+                        backgroundImage:
+                            NetworkImage(value.userData!.userImage),
+                      )),
             CustomPoppinsText(
               text: Provider.of<UserProvider>(context).userData!.email,
               fontSize: 20,
@@ -44,8 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 text: "Update",
                 size: size,
                 ontap: () {
-                  Provider.of<UserProvider>(context, listen: false)
-                      .updateProfileData(value.nameController.text);
+                  value.updateProfileData();
                 }),
             const SizedBox(height: 4),
             CustomButton1(

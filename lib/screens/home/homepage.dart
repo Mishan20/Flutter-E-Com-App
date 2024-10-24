@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/car_model.dart';
+import '../../providers/user_provider.dart';
 import '../product_view.dart';
 
 class HomePage extends StatefulWidget {
@@ -96,8 +98,11 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomPoppinsText(
-                  text: "Hello Ishan", fontSize: 22, color: Colors.black87),
+              CustomPoppinsText(
+                  text:
+                      "Hello ${Provider.of<UserProvider>(context).userData!.name}",
+                  fontSize: 22,
+                  color: Colors.black87),
               CustomPoppinsText(
                 text: "Let's Start Shopping...",
                 fontSize: 16,

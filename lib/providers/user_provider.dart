@@ -1,10 +1,13 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mi_store/controllers/auth_controller.dart';
-import 'package:mi_store/providers/profile_provider.dart';
+import 'package:mi_store/controllers/storage_controller.dart';
 import 'package:mi_store/utils/navigator_utils.dart';
-import 'package:provider/provider.dart';
 
 import '../models/user_model.dart';
 import '../screens/auth/signup_page.dart';
@@ -12,8 +15,18 @@ import '../screens/home/main_screen.dart';
 
 class UserProvider extends ChangeNotifier {
   UserModel? _user;
-
   UserModel? get userData => _user;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  TextEditingController get nameController => _nameController;
+  TextEditingController get emailController => _emailController;
+
+  //Pick Image
+  ImagePicker picker = ImagePicker();
+  File _image = File('');
+  File get image => _image;
 
   //Check Current User Auth State
   Future<void> checkAuthState(BuildContext context) async {
@@ -37,14 +50,42 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> fetchData(uid, context) async {
     _user = await AuthController().getUserData(uid);
-    Provider.of<ProfileProvider>(context, listen: false)
-        .serUserName(_user!.name);
+    setUserName(_user!.name);
     notifyListeners();
   }
 
-  Future<void> updateProfileData(name) async {
-    AuthController().updateProfile(_user!.uid, name).then((value) {
-      Logger().i("Profile Updated");
-    });
+  CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
+  Future<void> updateProfileData() async {
+    if (_image.path != "") {
+      String imageUrl =
+          await StorageController().uploadImage(_image, "User Images");
+      users.doc(_user!.uid).update(
+          {"name": _nameController.text, "userImage": imageUrl}).then((value) {
+        Logger().i("Profile Updated");
+      });
+    } else {
+      users
+          .doc(_user!.uid)
+          .update({"name": _nameController.text}).then((value) {
+        Logger().i("Profile Updated");
+      });
+    }
+  }
+
+  void setUserName(String name) {
+    _nameController.text = name;
+    notifyListeners();
+  }
+
+  Future<void> pickImage() async {
+    XFile? pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      _image = File(pickedImage.path);
+      notifyListeners();
+      Logger().i(_image.path);
+    } else {
+      Logger().e('No image selected');
+    }
   }
 }

@@ -6,7 +6,6 @@ import 'package:mi_store/providers/user_provider.dart';
 import 'package:mi_store/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'providers/profile_provider.dart';
 import 'providers/signin_provider.dart';
 import 'providers/signup_provider.dart';
 
@@ -25,9 +24,6 @@ void main() async {
       ),
       ChangeNotifierProvider(
         create: (context) => HomepageProvider(),
-      ),
-      ChangeNotifierProvider(
-        create: (context) => ProfileProvider(),
       ),
       ChangeNotifierProvider(
         create: (context) => UserProvider(),

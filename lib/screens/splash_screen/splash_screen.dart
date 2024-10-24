@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mi_store/controllers/auth_controller.dart';
 import 'package:mi_store/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
     // Animation controller for 4 seconds
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 4),
+      duration: const Duration(seconds: 3),
     );
 
     // Rotate the image
