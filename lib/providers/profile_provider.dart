@@ -6,4 +6,9 @@ class ProfileProvider extends ChangeNotifier{
 
   TextEditingController get nameController => _nameController;
   TextEditingController get emailController => _emailController;
+
+  void serUserName(String name){
+    _nameController.text = name;
+    notifyListeners();
+  }
 }

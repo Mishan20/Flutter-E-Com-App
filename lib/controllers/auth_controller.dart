@@ -1,29 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:mi_store/screens/home/main_screen.dart';
-import 'package:mi_store/utils/navigator_utils.dart';
 
-import '../screens/auth/signup_page.dart';
+import '../models/user_model.dart';
 
 class AuthController {
-//Check Current User Auth State
-  static Future<void> checkAuthState(BuildContext context) async {
-    Future.delayed(const Duration(seconds: 5), () {
-      FirebaseAuth.instance.userChanges().listen((User? user) {
-        if (user == null) {
-          Logger().e('User is currently signed out!');
-          // ignore: use_build_context_synchronously
-          CustomNavigator.goTo(context, const SignupPage());
-        } else {
-          Logger().i('User is signed in!');
-          // ignore: use_build_context_synchronously
-          CustomNavigator.goTo(context, const MainScreen());
-        }
-      });
-    });
-  }
-
   // Sign Out User
   static Future<void> signOutUser(BuildContext context) async {
     try {
@@ -52,14 +34,19 @@ class AuthController {
   }
 
   //Create Use Account with Email and Password
-  static Future<void> createUserAccount(
-      {required String emailAddress, required String password}) async {
+  Future<void> createUserAccount(
+      {required String emailAddress,
+      required String password,
+      required String name}) async {
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
         email: emailAddress,
         password: password,
-      );
+      )
+          .then((value) {
+        addUser(value.user!.uid, name, emailAddress);
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         Logger().e('The password provided is too weak.');
@@ -81,6 +68,41 @@ class AuthController {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: emailAddress);
       Logger().i('Password Reset Email Sent');
+    } catch (e) {
+      Logger().e(e);
+    }
+  }
+
+  // Save USer Data
+
+  CollectionReference users = FirebaseFirestore.instance.collection("Users");
+  Future<void> addUser(String uid, String name, String email) {
+    return users.doc(uid).set({
+      "name": name,
+      "userImage": "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+      "uid": uid,
+      "email": email,
+    }).then((value) {
+      Logger().i("User Added");
+    }).catchError((e) {
+      Logger().e(e);
+    });
+  }
+
+  //fetch user data
+  Future<UserModel?> getUserData(String uid) async {
+    try {
+      DocumentSnapshot userData = await users.doc(uid).get();
+      return UserModel.fromMap(userData.data() as Map<String, dynamic>);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Update Profile
+  Future<void> updateProfile(String uid, String name) async {
+    try {
+      users.doc(uid).update({"name": name});
     } catch (e) {
       Logger().e(e);
     }

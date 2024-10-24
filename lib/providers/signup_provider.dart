@@ -7,25 +7,30 @@ class SignUpProvider extends ChangeNotifier {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
   TextEditingController get emailController => _emailController;
   TextEditingController get passwordController => _passwordController;
   TextEditingController get confirmPasswordController =>
       _confirmPasswordController;
+  TextEditingController get nameController => _nameController;
 
   Future<void> signUpUser() async {
     if (_emailController.text.isEmpty) {
       Logger().e("Email is empty");
     } else if (_passwordController.text.isEmpty) {
       Logger().e("Password is empty");
+    } else if (_nameController.text.isEmpty) {
+      Logger().e("Name is empty");
     } else if (_confirmPasswordController.text.isEmpty) {
       Logger().e("Confirm Password is empty");
     } else if (_passwordController.text != _confirmPasswordController.text) {
       Logger().e("Passwords don't match");
     } else {
-      AuthController.createUserAccount(
+      AuthController().createUserAccount(
         emailAddress: _emailController.text,
         password: _passwordController.text,
+        name : _nameController.text,
       ).then((value) {
         clearTextFields();
       });

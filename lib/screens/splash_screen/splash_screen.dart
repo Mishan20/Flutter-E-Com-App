@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mi_store/controllers/auth_controller.dart';
+import 'package:mi_store/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -39,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen>
     _controller.forward();
 
     // After animation ends, redirect to SigninPage
-    AuthController.checkAuthState(context);
+    Provider.of<UserProvider>(context, listen: false).checkAuthState(context);
   }
 
   @override

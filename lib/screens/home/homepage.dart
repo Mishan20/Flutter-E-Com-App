@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
-import 'package:mi_store/controllers/auth_controller.dart';
 
 import '../../models/car_model.dart';
 import '../product_view.dart';
@@ -89,12 +88,6 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {},
           ),
-          IconButton(
-            icon: const Icon(Icons.exit_to_app, color: Colors.white),
-            onPressed: () {
-              AuthController.signOutUser(context);
-            },
-          )
         ],
       ),
       body: SingleChildScrollView(

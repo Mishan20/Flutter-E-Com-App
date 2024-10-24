@@ -3,7 +3,10 @@ import 'package:mi_store/components/custom_buttons/custom_button1.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 import 'package:mi_store/components/custom_textFiled/custom_textfield.dart';
 import 'package:mi_store/providers/profile_provider.dart';
+import 'package:mi_store/providers/user_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../../../controllers/auth_controller.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -23,12 +26,12 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.network(
-              "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+              Provider.of<UserProvider>(context).userData!.userImage,
               width: 100,
               height: 100,
             ),
-            const CustomPoppinsText(
-              text: "ishan@gmail.com",
+            CustomPoppinsText(
+              text: Provider.of<UserProvider>(context).userData!.email,
               fontSize: 20,
             ),
             CustomTextField(
@@ -40,7 +43,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 colors: [Colors.amber.shade600, Colors.amber.shade800],
                 text: "Update",
                 size: size,
-                ontap: () {})
+                ontap: () {
+                  Provider.of<UserProvider>(context, listen: false)
+                      .updateProfileData(value.nameController.text);
+                }),
+            const SizedBox(height: 4),
+            CustomButton1(
+                colors: [Colors.grey.shade600, Colors.grey.shade900],
+                text: "Logout",
+                size: size,
+                ontap: () {
+                  AuthController.signOutUser(context);
+                }),
           ],
         );
       }),
