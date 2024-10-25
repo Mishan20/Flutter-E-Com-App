@@ -71,7 +71,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     #splash Screen
-    - assets/images/splash/splash.png
+    - assets/images/splash/App_Icon.png
 
     #signin background
     - assets/images/background/bmw-cars-background.jpg

@@ -33,9 +33,9 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.blue, Colors.purple],
+              colors: [Colors.black87, Colors.amber.shade900],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               CustomPoppinsText(
                 text: "Let's Start Shopping...",
                 fontSize: 16,
-                color: Colors.grey.shade600,
+                color: Colors.amber.shade700,
               ),
               const SizedBox(height: 15),
               CarouselSlider(
@@ -105,7 +105,8 @@ class _HomePageState extends State<HomePage> {
                 future: Provider.of<AdminProvider>(context, listen: false)
                     .fetchProducts(context)
                     .then((value) {
-                      Provider.of<UserProvider>(context, listen: false).filterFavourites(value);
+                  Provider.of<UserProvider>(context, listen: false)
+                      .filterFavourites(value);
                   return value;
                 }),
                 builder: (context, snapshot) {

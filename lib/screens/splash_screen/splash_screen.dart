@@ -33,8 +33,9 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     // Text color transition from black to blue
-    _colorAnimation = ColorTween(begin: Colors.black87, end: Colors.blueAccent)
-        .animate(_controller);
+    _colorAnimation =
+        ColorTween(begin: Colors.black87, end: Colors.amber.shade900)
+            .animate(_controller);
 
     // Start the animation
     _controller.forward();
@@ -77,10 +78,10 @@ class _SplashScreenState extends State<SplashScreen>
                   builder: (context, child) {
                     return Transform.rotate(
                       angle: _rotationAnimation.value * 6.28, // Full circle
-                      child: Image.asset(
-                        "assets/images/splash/splash.png",
-                        width: size.width * 0.5,
-                        height: size.width * 0.5,
+                      child: CircleAvatar(
+                        radius: size.width * 0.4,
+                        backgroundImage:
+                            AssetImage("assets/images/splash/App_Icon.png"),
                       ),
                     );
                   },
@@ -91,7 +92,7 @@ class _SplashScreenState extends State<SplashScreen>
                   animation: _controller,
                   builder: (context, child) {
                     return Text(
-                      "BMW Cars",
+                      "MI STORE",
                       style: GoogleFonts.poppins(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
