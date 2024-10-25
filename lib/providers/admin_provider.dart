@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
+import 'package:mi_store/models/product_model.dart';
 import 'package:mi_store/utils/custom_dialog.dart';
 
 import '../controllers/storage_controller.dart';
@@ -69,5 +70,15 @@ class AdminProvider extends ChangeNotifier {
     } else {
       CustomDialog.toast(context, "No image selected");
     }
+  }
+
+  Future<List<Product>> fetchProducts(context) async {
+    QuerySnapshot snapshot = await product.get();
+    List<Product> products = [];
+    for (var e in snapshot.docs) {
+      Product product = Product.fromJson(e.data() as Map<String, dynamic>);
+      products.add(product);
+    }
+    return products;
   }
 }

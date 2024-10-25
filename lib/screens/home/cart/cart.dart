@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_buttons/custom_button1.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 
-import '../../../models/car_model.dart';
+import '../../../models/product_model.dart';
 
 class MyCart extends StatefulWidget {
   const MyCart({super.key});
@@ -12,41 +12,41 @@ class MyCart extends StatefulWidget {
 }
 
 class _CartState extends State<MyCart> {
-  List<Car> cars = [
-    Car(
+  List<Product> cars = [
+    Product(
       description:
           "The BMW 3 Series is a compact executive car manufactured by the German automaker BMW since May 1975.",
-      id: 1,
+      id: "1",
       image:
           "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
       name: "BMW 3 Series",
       price: 900000,
       type: "Sedan",
     ),
-    Car(
+    Product(
       description:
           "The Mercedes-Benz C-Class is a line of compact executive cars produced by Daimler AG.",
-      id: 2,
+      id: "2",
       image:
           "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
       name: "Mercedes C-Class",
       price: 850000,
       type: "Sedan",
     ),
-    Car(
+    Product(
       description:
           "The Audi A4 is a line of compact executive cars produced since 1994 by the German car manufacturer Audi.",
-      id: 3,
+      id: "3",
       image:
           "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
       name: "Audi A4",
       price: 800000,
       type: "Sedan",
     ),
-    Car(
+    Product(
       description:
           "The Tesla Model S is an all-electric five-door liftback sedan produced by Tesla, Inc.",
-      id: 4,
+      id: "4",
       image:
           "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
       name: "Tesla Model S",

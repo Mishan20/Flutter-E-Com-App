@@ -20,20 +20,14 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: const CustomPoppinsText(
-          text: "Profile",
-          fontSize: 20,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.amber.shade600,
-      ),
       body: Center(
         child: Consumer<UserProvider>(builder: (context, value, child) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              CustomPoppinsText(text: "Profile"),
+              const SizedBox(height: 20),
               InkWell(
                   onTap: () {
                     value.pickImage();

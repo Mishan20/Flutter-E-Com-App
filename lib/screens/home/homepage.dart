@@ -1,9 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
+import 'package:mi_store/providers/admin_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/car_model.dart';
+import '../../models/product_model.dart';
 import '../../providers/user_provider.dart';
 import '../product_view.dart';
 
@@ -21,49 +22,6 @@ class _HomePageState extends State<HomePage> {
     "https://e1.pxfuel.com/desktop-wallpaper/460/742/desktop-wallpaper-bmw-2021-series-4-electric-car-landscape-2021-electric-cars.jpg",
     "https://w0.peakpx.com/wallpaper/643/480/HD-wallpaper-bmw-328-colors-landscape.jpg",
     "https://e0.pxfuel.com/wallpapers/48/480/desktop-wallpaper-bmw-steering-wheel-50219-px.jpg"
-  ];
-
-  List<Car> cars = [
-    Car(
-      description:
-          "The BMW 3 Series is a compact executive car manufactured by the German automaker BMW since May 1975.",
-      id: 1,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "BMW 3 Series",
-      price: 900000,
-      type: "Sedan",
-    ),
-    Car(
-      description:
-          "The Mercedes-Benz C-Class is a line of compact executive cars produced by Daimler AG.",
-      id: 2,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Mercedes C-Class",
-      price: 850000,
-      type: "Sedan",
-    ),
-    Car(
-      description:
-          "The Audi A4 is a line of compact executive cars produced since 1994 by the German car manufacturer Audi.",
-      id: 3,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Audi A4",
-      price: 800000,
-      type: "Sedan",
-    ),
-    Car(
-      description:
-          "The Tesla Model S is an all-electric five-door liftback sedan produced by Tesla, Inc.",
-      id: 4,
-      image:
-          "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-      name: "Tesla Model S",
-      price: 950000,
-      type: "Electric",
-    ),
   ];
 
   @override
@@ -141,88 +99,100 @@ class _HomePageState extends State<HomePage> {
                 }).toList(),
               ),
               const SizedBox(height: 20),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: cars.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: 0.8,
-                ),
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetails(
-                            car: cars[index],
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.white, Colors.grey.shade200],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            // ignore: deprecated_member_use
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
+              FutureBuilder(
+                future: Provider.of<AdminProvider>(context, listen: false)
+                    .fetchProducts(context),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    List<Product> products = snapshot.data as List<Product>;
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: products.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 15,
+                        mainAxisSpacing: 15,
+                        childAspectRatio: 0.8,
                       ),
-                      child: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.favorite_border,
-                                color: Colors.grey.shade700,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductDetails(
+                                  car: products[index],
+                                ),
                               ),
-                              onPressed: () {},
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [Colors.white, Colors.grey.shade200],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: [
+                                BoxShadow(
+                                  // ignore: deprecated_member_use
+                                  color: Colors.black.withOpacity(0.1),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.favorite_border,
+                                      color: Colors.grey.shade700,
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Image.network(products[index].image),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomPoppinsText(
+                                          text: products[index].name,
+                                          fontSize: 14,
+                                          textOverflow: TextOverflow.ellipsis,
+                                        ),
+                                        CustomPoppinsText(
+                                          text: "\$${products[index].price}",
+                                          fontSize: 14,
+                                          textOverflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.blue,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Expanded(
-                            child: Image.network(cars[index].image),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomPoppinsText(
-                                    text: cars[index].name,
-                                    fontSize: 14,
-                                    textOverflow: TextOverflow.ellipsis,
-                                  ),
-                                  CustomPoppinsText(
-                                    text: "\$${cars[index].price}",
-                                    fontSize: 14,
-                                    textOverflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.blue,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator());
                 },
               ),
             ],
