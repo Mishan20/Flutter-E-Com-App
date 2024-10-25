@@ -76,6 +76,9 @@ flutter:
     #signin background
     - assets/images/background/bmw-cars-background.jpg
 
+    #empty favorites image
+    - assets/images/favourite/empty_favourite.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

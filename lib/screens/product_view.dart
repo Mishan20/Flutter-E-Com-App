@@ -7,8 +7,8 @@ import '../components/custom_buttons/custom_button1.dart';
 import 'home/cart/cart.dart';
 
 class ProductDetails extends StatefulWidget {
-  final Product car;
-  const ProductDetails({super.key, required this.car});
+  final Product item;
+  const ProductDetails({super.key, required this.item});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -44,7 +44,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15), // Image clipping
                     child: Image.network(
-                      widget.car.image,
+                      widget.item.image,
                       width: double.infinity,
                       height: size.height * 0.35, // Adjust image size
                       fit: BoxFit.cover,
@@ -53,21 +53,21 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
                 const SizedBox(height: 20), // Add space after the image
                 CustomPoppinsText(
-                  text: widget.car.name,
+                  text: widget.item.name,
                   fontSize: 24, // Larger font for title
                   fontWeight: FontWeight.bold,
                   color: Colors.black87, // Darker text color for readability
                 ),
                 const SizedBox(height: 10), // Add space before the price
                 CustomPoppinsText(
-                  text: "\$ ${widget.car.price}",
+                  text: "\$ ${widget.item.price}",
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: Colors.green.shade700, // Green color for the price
                 ),
                 const SizedBox(height: 20), // Add space before the description
                 Text(
-                  widget.car.description,
+                  widget.item.description,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w400,

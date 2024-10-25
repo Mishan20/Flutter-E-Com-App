@@ -3,12 +3,14 @@ class UserModel {
   String userImage;
   String email;
   String uid;
+  List<String> favourite;
 
   UserModel({
     required this.name,
     required this.userImage,
     required this.email,
     required this.uid,
+    required this.favourite,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> json) {
@@ -17,6 +19,6 @@ class UserModel {
       userImage: json['userImage'],
       email: json['email'],
       uid: json['uid'],
-    );
+      favourite: List<String>.from(json["favourite"]));
   }
 }

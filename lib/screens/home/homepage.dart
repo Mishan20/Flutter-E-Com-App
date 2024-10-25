@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
@@ -101,7 +103,11 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 20),
               FutureBuilder(
                 future: Provider.of<AdminProvider>(context, listen: false)
-                    .fetchProducts(context),
+                    .fetchProducts(context)
+                    .then((value) {
+                      Provider.of<UserProvider>(context, listen: false).filterFavourites(value);
+                  return value;
+                }),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     List<Product> products = snapshot.data as List<Product>;
@@ -123,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProductDetails(
-                                  car: products[index],
+                                  item: products[index],
                                 ),
                               ),
                             );
@@ -146,47 +152,62 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ],
                             ),
-                            child: Column(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: IconButton(
-                                    icon: Icon(
-                                      Icons.favorite_border,
-                                      color: Colors.grey.shade700,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Image.network(products[index].image),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomPoppinsText(
-                                          text: products[index].name,
-                                          fontSize: 14,
-                                          textOverflow: TextOverflow.ellipsis,
-                                        ),
-                                        CustomPoppinsText(
-                                          text: "\$${products[index].price}",
-                                          fontSize: 14,
-                                          textOverflow: TextOverflow.ellipsis,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.blue,
-                                        ),
-                                      ],
+                            child: Consumer<UserProvider>(
+                                builder: (context, value, child) {
+                              return Column(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.favorite,
+                                        color: value.favouriteItems
+                                                .contains(products[index].id)
+                                            ? Colors.amber
+                                            : Colors.grey.shade700,
+                                      ),
+                                      onPressed: () {
+                                        if (value.favouriteItems
+                                            .contains(products[index].id)) {
+                                          value.removeFromFavourite(
+                                              context, products[index]);
+                                        } else {
+                                          value.addToFavourite(
+                                              context, products[index]);
+                                        }
+                                      },
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                  Expanded(
+                                    child: Image.network(products[index].image),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CustomPoppinsText(
+                                            text: products[index].name,
+                                            fontSize: 14,
+                                            textOverflow: TextOverflow.ellipsis,
+                                          ),
+                                          CustomPoppinsText(
+                                            text: "\$${products[index].price}",
+                                            fontSize: 14,
+                                            textOverflow: TextOverflow.ellipsis,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.blue,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }),
                           ),
                         );
                       },

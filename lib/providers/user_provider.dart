@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mi_store/controllers/auth_controller.dart';
 import 'package:mi_store/controllers/storage_controller.dart';
+import 'package:mi_store/models/product_model.dart';
 import 'package:mi_store/utils/navigator_utils.dart';
 
 import '../models/user_model.dart';
@@ -17,6 +18,12 @@ import '../screens/home/main_screen.dart';
 import '../utils/custom_dialog.dart';
 
 class UserProvider extends ChangeNotifier {
+  List<String> _favouriteItems = [];
+  List<String> get favouriteItems => _favouriteItems;
+
+  List<Product> _favItems = [];
+  List<Product> get favItems => _favItems;
+
   UserModel? _user;
   UserModel? get userData => _user;
 
@@ -39,7 +46,6 @@ class UserProvider extends ChangeNotifier {
           Logger().e('User is currently signed out!');
           CustomNavigator.goTo(context, const SignupPage());
         } else {
-         
           fetchData(user.uid, context).then((value) {
             CustomNavigator.goTo(context, const MainScreen());
             Logger().i('User is signed in ----> $user');
@@ -51,6 +57,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> fetchData(uid, context) async {
     _user = await AuthController().getUserData(uid);
+    _favouriteItems = _user!.favourite;
     setUserName(_user!.name);
     notifyListeners();
   }
@@ -91,5 +98,37 @@ class UserProvider extends ChangeNotifier {
     } else {
       Logger().e('No image selected');
     }
+  }
+
+  //Add Favourite Items
+  void addToFavourite(BuildContext context, Product product) {
+    _favouriteItems.add(product.id);
+    _favItems.add(product);
+    users.doc(_user!.uid).update({"favourite": _favouriteItems}).then((value) {
+      CustomDialog.toast(context, "Added to Favourites");
+    });
+    notifyListeners();
+  }
+
+//Remove Favourite Items
+  void removeFromFavourite(BuildContext context, Product product) {
+    _favouriteItems.remove(product.id);
+    _favItems.remove(product);
+    users.doc(_user!.uid).update({"favourite": _favouriteItems}).then((value) {
+      CustomDialog.toast(context, "Removed from Favourites");
+    });
+    notifyListeners();
+  }
+
+  void filterFavourites(List<Product> products) {
+    List<Product> filteredList = [];
+    for (var product in products) {
+      if (_favouriteItems.contains(product.id) &&
+          !_favItems.contains(product)) {
+        filteredList.add(product);
+      }
+    }
+    _favItems = filteredList;
+    notifyListeners();
   }
 }
