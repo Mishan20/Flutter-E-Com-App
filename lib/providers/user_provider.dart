@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +14,7 @@ import 'package:mi_store/utils/navigator_utils.dart';
 import '../models/user_model.dart';
 import '../screens/auth/signup_page.dart';
 import '../screens/home/main_screen.dart';
+import '../utils/custom_dialog.dart';
 
 class UserProvider extends ChangeNotifier {
   UserModel? _user;
@@ -34,12 +37,10 @@ class UserProvider extends ChangeNotifier {
       FirebaseAuth.instance.userChanges().listen((User? user) async {
         if (user == null) {
           Logger().e('User is currently signed out!');
-          // ignore: use_build_context_synchronously
           CustomNavigator.goTo(context, const SignupPage());
         } else {
-          // ignore: use_build_context_synchronously
+         
           fetchData(user.uid, context).then((value) {
-            // ignore: use_build_context_synchronously
             CustomNavigator.goTo(context, const MainScreen());
             Logger().i('User is signed in ----> $user');
           });
@@ -56,19 +57,22 @@ class UserProvider extends ChangeNotifier {
 
   CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
-  Future<void> updateProfileData() async {
+  Future<void> updateProfileData(BuildContext context) async {
+    CustomDialog.show(context);
     if (_image.path != "") {
       String imageUrl =
           await StorageController().uploadImage(_image, "User Images");
       users.doc(_user!.uid).update(
           {"name": _nameController.text, "userImage": imageUrl}).then((value) {
-        Logger().i("Profile Updated");
+        CustomDialog.toast(context, "User Updated");
+        CustomDialog.dismiss(context);
       });
     } else {
       users
           .doc(_user!.uid)
           .update({"name": _nameController.text}).then((value) {
-        Logger().i("Profile Updated");
+        CustomDialog.dismiss(context);
+        CustomDialog.toast(context, "User Updated");
       });
     }
   }

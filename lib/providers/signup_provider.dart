@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:mi_store/controllers/auth_controller.dart';
+
+import '../utils/custom_dialog.dart';
 
 class SignUpProvider extends ChangeNotifier {
   final TextEditingController _emailController = TextEditingController();
@@ -15,7 +19,8 @@ class SignUpProvider extends ChangeNotifier {
       _confirmPasswordController;
   TextEditingController get nameController => _nameController;
 
-  Future<void> signUpUser() async {
+  Future<void> signUpUser(BuildContext context) async {
+    CustomDialog.show(context);
     if (_emailController.text.isEmpty) {
       Logger().e("Email is empty");
     } else if (_passwordController.text.isEmpty) {
@@ -27,12 +32,16 @@ class SignUpProvider extends ChangeNotifier {
     } else if (_passwordController.text != _confirmPasswordController.text) {
       Logger().e("Passwords don't match");
     } else {
-      AuthController().createUserAccount(
+      AuthController()
+          .createUserAccount(
         emailAddress: _emailController.text,
         password: _passwordController.text,
-        name : _nameController.text,
-      ).then((value) {
+        name: _nameController.text,
+      )
+          .then((value) {
         clearTextFields();
+        CustomDialog.toast(context, "User Signed Up");
+        CustomDialog.dismiss(context);
       });
     }
   }

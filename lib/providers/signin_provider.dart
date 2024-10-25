@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:mi_store/controllers/auth_controller.dart';
+
+import '../utils/custom_dialog.dart';
 
 class SigninProvider extends ChangeNotifier {
   final TextEditingController _emailController = TextEditingController();
@@ -14,6 +18,7 @@ class SigninProvider extends ChangeNotifier {
   TextEditingController get recoveryEmailController => _recoveryEmailController;
 
   Future<void> signInUser(BuildContext context) async {
+     CustomDialog.show(context);
     if (_emailController.text.isEmpty) {
       Logger().e("Email is empty");
     } else if (_passwordController.text.isEmpty) {
@@ -24,6 +29,8 @@ class SigninProvider extends ChangeNotifier {
               password: _passwordController.text)
           .then((value) {
         clearTextFields();
+        CustomDialog.toast(context, "User Signed In");
+        CustomDialog.dismiss(context);
       });
     }
   }
@@ -38,9 +45,10 @@ class SigninProvider extends ChangeNotifier {
       ).then((value) {
         clearTextFields();
         Fluttertoast.showToast(
-            msg: "Password reset email sent",
+            msg: "Password Reset Email Sent",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.SNACKBAR,
+            webPosition: "center",
             timeInSecForIosWeb: 5,
             backgroundColor: Colors.green,
             textColor: Colors.white,

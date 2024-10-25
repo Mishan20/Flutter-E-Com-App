@@ -53,7 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 text: "Update",
                 size: size,
                 ontap: () {
-                  value.updateProfileData();
+                  value.updateProfileData(context);
                 }),
             const SizedBox(height: 4),
             CustomButton1(
