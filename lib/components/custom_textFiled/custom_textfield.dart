@@ -6,12 +6,14 @@ class CustomTextField extends StatefulWidget {
   final IconData? prefixIcon;
   final String text;
   bool isPassword;
+  TextInputType inputType;
 
   CustomTextField({
     required this.text,
     required this.controller,
     this.isPassword = false,
     required this.prefixIcon,
+    this.inputType = TextInputType.text,
     super.key,
   });
 
@@ -34,6 +36,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: TextField(
+        keyboardType: widget.inputType,
         controller: widget.controller,
         obscureText: widget.isPassword && isObscure,
         decoration: InputDecoration(
