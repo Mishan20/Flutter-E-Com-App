@@ -53,7 +53,6 @@ class SigninProvider extends ChangeNotifier {
             backgroundColor: Colors.green,
             textColor: Colors.white,
             fontSize: 16.0);
-        // ignore: use_build_context_synchronously
         Navigator.pop(context);
       });
     }
