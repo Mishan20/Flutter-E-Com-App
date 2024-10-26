@@ -134,7 +134,7 @@ class _CartState extends State<MyCart> {
                                           onPressed: () {
                                             value
                                                 .increseCartItemQuantity(index);
-                                          },
+                                          }, 
                                         ),
                                       ],
                                     ),
