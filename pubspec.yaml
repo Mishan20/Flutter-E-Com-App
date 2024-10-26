@@ -46,6 +46,10 @@ dependencies:
   image_picker: ^1.1.2
   firebase_storage: ^12.3.4
   flutter_spinkit: ^5.2.1
+  flutter_launcher_icons: ^0.14.1
+  flutter_stripe: ^11.2.0
+  http: ^1.2.2
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +82,9 @@ flutter:
 
     #empty favorites image
     - assets/images/favourite/empty_favourite.png
+   
+   # env file
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

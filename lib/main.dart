@@ -1,8 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mi_store/firebase_options.dart';
 import 'package:mi_store/providers/admin_provider.dart';
+import 'package:mi_store/providers/cart_provider.dart';
 import 'package:mi_store/providers/homepage_provider.dart';
+import 'package:mi_store/providers/payment_provider.dart';
 import 'package:mi_store/providers/user_provider.dart';
 import 'package:mi_store/screens/splash_screen/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -10,11 +14,15 @@ import 'package:provider/provider.dart';
 import 'providers/signin_provider.dart';
 import 'providers/signup_provider.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await dotenv.load(fileName: ".env");
+
+  Stripe.publishableKey = dotenv.env["PUBLISHABLE_KEY"]!;
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(
@@ -31,6 +39,12 @@ void main() async {
       ),
       ChangeNotifierProvider(
         create: (context) => AdminProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => CartProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => PaymentProvider(),
       ),
     ],
     child: const MyApp(),
