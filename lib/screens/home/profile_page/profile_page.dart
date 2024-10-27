@@ -4,6 +4,7 @@ import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 import 'package:mi_store/components/custom_textFiled/custom_textfield.dart';
 import 'package:mi_store/providers/user_provider.dart';
 import 'package:mi_store/screens/home/admin/add_product.dart';
+import 'package:mi_store/screens/home/home_slider/slider_update.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/auth_controller.dart';
@@ -69,6 +70,17 @@ class _ProfilePageState extends State<ProfilePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const AddProduct()));
+                  }),
+              const SizedBox(height: 4),
+              CustomButton1(
+                  colors: [Colors.amber.shade600, Colors.amber.shade900],
+                  text: "Update Home Slider",
+                  size: size,
+                  ontap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const UpdateSlider()));
                   }),
               const SizedBox(height: 4),
               CustomButton1(

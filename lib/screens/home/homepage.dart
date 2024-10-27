@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 import 'package:mi_store/providers/admin_provider.dart';
+import 'package:mi_store/providers/home_slider_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/product_model.dart';
@@ -18,14 +19,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> offers = [
-    "https://c4.wallpaperflare.com/wallpaper/392/133/116/car-bmw-bmw-m4-wallpaper-preview.jpg",
-    "https://wallpapers.com/images/featured/bmw-desktop-hd-wyawdmrxc44x1ere.jpg",
-    "https://e1.pxfuel.com/desktop-wallpaper/460/742/desktop-wallpaper-bmw-2021-series-4-electric-car-landscape-2021-electric-cars.jpg",
-    "https://w0.peakpx.com/wallpaper/643/480/HD-wallpaper-bmw-328-colors-landscape.jpg",
-    "https://e0.pxfuel.com/wallpapers/48/480/desktop-wallpaper-bmw-steering-wheel-50219-px.jpg"
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,26 +71,30 @@ class _HomePageState extends State<HomePage> {
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   autoPlayCurve: Curves.fastOutSlowIn,
                 ),
-                items: offers.map((i) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 3,
-                          blurRadius: 7,
-                          offset: const Offset(0, 3),
+                items: Provider.of<HomeSliderProvider>(context)
+                    .sliderImages
+                    .map((i) {
+                  return Builder(builder: (BuildContext context) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        boxShadow: [
+                          BoxShadow(
+                            // ignore: deprecated_member_use
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 3,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                        image: DecorationImage(
+                          image: NetworkImage(i),
+                          fit: BoxFit.cover,
                         ),
-                      ],
-                      image: DecorationImage(
-                        image: NetworkImage(i),
-                        fit: BoxFit.cover,
                       ),
-                    ),
-                  );
+                    );
+                  });
                 }).toList(),
               ),
               const SizedBox(height: 20),

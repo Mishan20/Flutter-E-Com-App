@@ -8,9 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
 import 'package:mi_store/controllers/auth_controller.dart';
+import 'package:mi_store/controllers/home_slider_controller.dart';
 import 'package:mi_store/controllers/storage_controller.dart';
 import 'package:mi_store/models/product_model.dart';
+import 'package:mi_store/providers/home_slider_provider.dart';
 import 'package:mi_store/utils/navigator_utils.dart';
+import 'package:provider/provider.dart';
 
 import '../controllers/order_controller.dart';
 import '../models/order_model.dart';
@@ -21,7 +24,7 @@ import '../utils/custom_dialog.dart';
 
 class UserProvider extends ChangeNotifier {
   final OrderController oController = OrderController();
-  
+
   List<String> _favouriteItems = [];
   List<String> get favouriteItems => _favouriteItems;
 
@@ -61,6 +64,9 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> fetchData(uid, context) async {
     _user = await AuthController().getUserData(uid);
+    List<String> list = await HomeSliderController().getSliderImages();
+    Provider.of<HomeSliderProvider>(context, listen: false)
+        .updateSliderImageList(list);
     _favouriteItems = _user!.favourite;
     setUserName(_user!.name);
     notifyListeners();
@@ -135,6 +141,7 @@ class UserProvider extends ChangeNotifier {
     _favItems = filteredList;
     notifyListeners();
   }
+
   Future<List<OrderModel>> getMyOrders() async {
     List<OrderModel> orders = await oController.fetchMyOrders(_user!.uid);
 

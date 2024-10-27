@@ -5,6 +5,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mi_store/firebase_options.dart';
 import 'package:mi_store/providers/admin_provider.dart';
 import 'package:mi_store/providers/cart_provider.dart';
+import 'package:mi_store/providers/home_slider_provider.dart';
 import 'package:mi_store/providers/homepage_provider.dart';
 import 'package:mi_store/providers/payment_provider.dart';
 import 'package:mi_store/providers/user_provider.dart';
@@ -45,6 +46,9 @@ Future<void> main() async {
       ),
       ChangeNotifierProvider(
         create: (context) => PaymentProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (context) => HomeSliderProvider(),
       ),
     ],
     child: const MyApp(),
