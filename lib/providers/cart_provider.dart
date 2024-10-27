@@ -1,9 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_store/models/cart_model.dart';
 import 'package:mi_store/models/product_model.dart';
 import 'package:mi_store/utils/custom_dialog.dart';
+import 'package:provider/provider.dart';
+
+import '../controllers/order_controller.dart';
+import '../models/order_model.dart';
+import '../models/user_model.dart';
+import 'user_provider.dart';
 
 class CartProvider extends ChangeNotifier {
+  OrderController oController = OrderController();
   int _quantity = 1;
   int get quantity => _quantity;
 
@@ -68,5 +76,16 @@ class CartProvider extends ChangeNotifier {
     return total;
   }
 
-  
+  Future<void> saveOrderDetails(BuildContext context) async {
+    UserModel user =
+        Provider.of<UserProvider>(context, listen: false).userData!;
+
+    OrderModel oModel = OrderModel(
+      totalAmount: _total,
+      id: "",
+      items: _cartItems,
+      user: user,
+    );
+    oController.saveOrder(oModel, context);
+  }
 }

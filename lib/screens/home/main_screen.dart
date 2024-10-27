@@ -3,6 +3,7 @@ import 'package:mi_store/providers/homepage_provider.dart';
 import 'package:mi_store/screens/home/cart/cart.dart';
 import 'package:mi_store/screens/home/favourite/favourite_page.dart';
 import 'package:mi_store/screens/home/homepage.dart';
+import 'package:mi_store/screens/orders/my_orders.dart';
 import 'package:provider/provider.dart';
 
 import 'profile_page/profile_page.dart';
@@ -19,6 +20,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomePage(),
     const FavouritePage(),
     const MyCart(),
+    const MyOrders(),
     const ProfilePage()
   ];
   @override
@@ -54,11 +56,19 @@ class _MainScreenState extends State<MainScreen> {
                 },
               ),
               BottomNBIcon(
-                text: "Profile",
-                icon: Icons.person,
+                text: "Orders",
+                icon: Icons.list_alt,
                 isActive: value.currentIndex == 3,
                 onTap: () {
                   value.changeIndex(3);
+                },
+              ),
+              BottomNBIcon(
+                text: "Profile",
+                icon: Icons.person,
+                isActive: value.currentIndex == 4,
+                onTap: () {
+                  value.changeIndex(4);
                 },
               ),
             ],

@@ -12,12 +12,16 @@ import 'package:mi_store/controllers/storage_controller.dart';
 import 'package:mi_store/models/product_model.dart';
 import 'package:mi_store/utils/navigator_utils.dart';
 
+import '../controllers/order_controller.dart';
+import '../models/order_model.dart';
 import '../models/user_model.dart';
 import '../screens/auth/signup_page.dart';
 import '../screens/home/main_screen.dart';
 import '../utils/custom_dialog.dart';
 
 class UserProvider extends ChangeNotifier {
+  final OrderController oController = OrderController();
+  
   List<String> _favouriteItems = [];
   List<String> get favouriteItems => _favouriteItems;
 
@@ -130,5 +134,10 @@ class UserProvider extends ChangeNotifier {
     }
     _favItems = filteredList;
     notifyListeners();
+  }
+  Future<List<OrderModel>> getMyOrders() async {
+    List<OrderModel> orders = await oController.fetchMyOrders(_user!.uid);
+
+    return orders;
   }
 }

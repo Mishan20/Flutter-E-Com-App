@@ -5,7 +5,7 @@ import 'package:mi_store/components/custom_text/custom_poppins_text.dart';
 import 'package:mi_store/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../product_view.dart';
+import '../../product_view/product_view.dart';
 
 class FavouritePage extends StatefulWidget {
   const FavouritePage({super.key});

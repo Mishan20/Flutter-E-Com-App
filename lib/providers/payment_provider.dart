@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mi_store/services/stripe_service.dart';
+import 'package:provider/provider.dart';
 
 import '../utils/custom_dialog.dart';
+import 'cart_provider.dart';
 
 class PaymentProvider extends ChangeNotifier {
   StripeService service = StripeService();
@@ -23,7 +25,8 @@ class PaymentProvider extends ChangeNotifier {
       await Stripe.instance.presentPaymentSheet().then((value) {
         CustomDialog.show(context);
         CustomDialog.toast(context, "Success - $totalAmount");
-        CustomDialog.dismiss(context);
+        Provider.of<CartProvider>(context, listen: false)
+            .saveOrderDetails(context);
       });
     }
   }

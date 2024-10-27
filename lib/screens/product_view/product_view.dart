@@ -4,7 +4,7 @@ import 'package:mi_store/models/product_model.dart';
 import 'package:mi_store/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../components/custom_buttons/custom_button1.dart';
+import '../../components/custom_buttons/custom_button1.dart';
 
 class ProductDetails extends StatefulWidget {
   final Product item;

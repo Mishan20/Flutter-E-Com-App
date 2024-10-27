@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/product_model.dart';
 import '../../providers/user_provider.dart';
-import '../product_view.dart';
+import '../product_view/product_view.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
