@@ -27,6 +27,7 @@ class PaymentProvider extends ChangeNotifier {
         CustomDialog.toast(context, "Success - $totalAmount");
         Provider.of<CartProvider>(context, listen: false)
             .saveOrderDetails(context);
+        Provider.of<CartProvider>(context, listen: false).clearCart();
       });
     }
   }

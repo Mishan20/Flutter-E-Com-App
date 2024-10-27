@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_store/models/cart_model.dart';
 import 'package:mi_store/models/product_model.dart';
@@ -33,7 +32,7 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  void addToCart(  BuildContext context, Product product) {
+  void addToCart(BuildContext context, Product product) {
     if (_cartItems.any((element) => element.product.id == product.id)) {
       _cartItems.removeWhere((element) => element.product.id == product.id);
       notifyListeners();
@@ -69,10 +68,11 @@ class CartProvider extends ChangeNotifier {
   }
 
   double calculateTotal() {
-    double  total = 0;
+    double total = 0;
     for (var item in _cartItems) {
       total += item.product.price * item.quantity;
     }
+    _total = total;
     return total;
   }
 

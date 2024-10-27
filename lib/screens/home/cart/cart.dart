@@ -213,7 +213,9 @@ class _CartState extends State<MyCart> {
                                   fontWeight: FontWeight.w600,
                                 ),
                                 CustomPoppinsText(
-                                  text: "\$ ${value.calculateTotal()}",
+                                  text: value.cartItems.isNotEmpty
+                                      ? "\$ ${value.calculateTotal()}"
+                                      : "\$ 0",
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
