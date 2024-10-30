@@ -161,7 +161,9 @@ class _SignupPageState extends State<SignupPage> {
                                   // Google
                                   GestureDetector(
                                     onTap: () {
-                                      // Add Google sign-up functionality here
+                                      Provider.of<SignUpProvider>(context,
+                                              listen: false)
+                                          .signInWithGoogle(context);
                                     },
                                     child: const FaIcon(
                                       FontAwesomeIcons.google,

@@ -3,11 +3,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logger/logger.dart';
 
 import '../models/user_model.dart';
 
 class AuthController {
+  final CollectionReference users =
+      FirebaseFirestore.instance.collection("Users");
+
   // Sign Out User
   static Future<void> signOutUser(BuildContext context) async {
     try {
@@ -77,7 +81,6 @@ class AuthController {
 
   // Save USer Data
 
-  CollectionReference users = FirebaseFirestore.instance.collection("Users");
   Future<void> addUser(String uid, String name, String email) {
     return users.doc(uid).set({
       "name": name,
@@ -97,6 +100,47 @@ class AuthController {
       DocumentSnapshot userData = await users.doc(uid).get();
       return UserModel.fromMap(userData.data() as Map<String, dynamic>);
     } catch (e) {
+      return null;
+    }
+  }
+
+  //Sign In with Google
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      if (googleUser == null) {
+        // The user canceled the sign-in
+        return null;
+      }
+
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Check if user already exists in Firestore
+      final userExists = await users.doc(userCredential.user!.uid).get();
+
+      if (!userExists.exists) {
+        // If the user doesn't exist in Firestore, add them
+        await addUser(
+          userCredential.user!.uid,
+          googleUser.displayName ?? "Unknown",
+          googleUser.email,
+        );
+      }
+
+      Logger().i("User signed in with Google and added to Firestore if new.");
+      return userCredential;
+    } catch (e) {
+      Logger().e(e);
       return null;
     }
   }

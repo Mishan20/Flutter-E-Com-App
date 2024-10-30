@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen>
     // Animation controller for 4 seconds
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 1),
     );
 
     // Rotate the image

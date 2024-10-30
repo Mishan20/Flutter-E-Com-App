@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mi_store/providers/signin_provider.dart';
+import 'package:mi_store/providers/signup_provider.dart';
 import 'package:mi_store/screens/auth/forgot_password.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,6 @@ class SigninPage extends StatefulWidget {
 }
 
 class _SigninPageState extends State<SigninPage> {
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -122,7 +122,7 @@ class _SigninPageState extends State<SigninPage> {
                                 Provider.of<SigninProvider>(context,
                                         listen: false)
                                     .signInUser(context);
-                              }, 
+                              },
                               size: size,
                               text: 'Sign In',
                               colors: [
@@ -167,7 +167,9 @@ class _SigninPageState extends State<SigninPage> {
                                 // Google
                                 GestureDetector(
                                   onTap: () {
-                                    // Add Google login functionality here
+                                    Provider.of<SignUpProvider>(context,
+                                            listen: false)
+                                        .signInWithGoogle(context);
                                   },
                                   child: const FaIcon(
                                     FontAwesomeIcons.google,
