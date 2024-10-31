@@ -49,7 +49,7 @@ class _SignupPageState extends State<SignupPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CustomPoppinsText(
-                          text: "BMW MI Store",
+                          text: "MI Store",
                           fontSize: 30,
                           fontWeight: FontWeight.w600,
                           color: Colors.white,
