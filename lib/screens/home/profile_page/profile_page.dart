@@ -21,78 +21,82 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Center(
-        child: Consumer<UserProvider>(builder: (context, value, child) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CustomPoppinsText(text: "Profile"),
-              const SizedBox(height: 20),
-              InkWell(
-                  onTap: () {
-                    value.pickImage();
-                  },
-                  // ignore: unrelated_type_equality_checks
-                  child: value.image.path != ""
-                      ? CircleAvatar(
-                          radius: 60,
-                          backgroundImage: FileImage(value.image),
-                        )
-                      : CircleAvatar(
-                          radius: 60,
-                          backgroundImage:
-                              NetworkImage(value.userData!.userImage),
-                        )),
-              CustomPoppinsText(
-                text: Provider.of<UserProvider>(context).userData!.email,
-                fontSize: 20,
+      body: SafeArea(
+        child: Center(
+          child: Consumer<UserProvider>(builder: (context, value, child) {
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomPoppinsText(text: "Profile"),
+                  const SizedBox(height: 5),
+                  InkWell(
+                      onTap: () {
+                        value.pickImage();
+                      },
+                      // ignore: unrelated_type_equality_checks
+                      child: value.image.path != ""
+                          ? CircleAvatar(
+                              radius: 60,
+                              backgroundImage: FileImage(value.image),
+                            )
+                          : CircleAvatar(
+                              radius: 60,
+                              backgroundImage:
+                                  NetworkImage(value.userData!.userImage),
+                            )),
+                  CustomPoppinsText(
+                    text: Provider.of<UserProvider>(context).userData!.email,
+                    fontSize: 20,
+                  ),
+                  CustomTextField(
+                      text: "Name",
+                      controller: value.nameController,
+                      prefixIcon: Icons.person),
+                  const SizedBox(height: 5),
+                  CustomButton1(
+                      colors: [Colors.amber.shade600, Colors.amber.shade900],
+                      text: "Update",
+                      size: size,
+                      ontap: () {
+                        value.updateProfileData(context);
+                      }),
+                  const SizedBox(height: 1),
+                  CustomButton1(
+                      colors: [Colors.amber.shade600, Colors.amber.shade900],
+                      text: "Add Product",
+                      size: size,
+                      ontap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AddProduct()));
+                      }),
+                  const SizedBox(height: 1),
+                  CustomButton1(
+                      colors: [Colors.amber.shade600, Colors.amber.shade900],
+                      text: "Update Home Slider",
+                      size: size,
+                      ontap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const UpdateSlider()));
+                      }),
+                  const SizedBox(height: 1),
+                  CustomButton1(
+                      colors: [Colors.grey.shade600, Colors.grey.shade900],
+                      text: "Logout",
+                      size: size,
+                      ontap: () {
+                        AuthController.signOutUser(context);
+                      }),
+                ],
               ),
-              CustomTextField(
-                  text: "Name",
-                  controller: value.nameController,
-                  prefixIcon: Icons.person),
-              const SizedBox(height: 20),
-              CustomButton1(
-                  colors: [Colors.amber.shade600, Colors.amber.shade900],
-                  text: "Update",
-                  size: size,
-                  ontap: () {
-                    value.updateProfileData(context);
-                  }),
-              const SizedBox(height: 4),
-              CustomButton1(
-                  colors: [Colors.amber.shade600, Colors.amber.shade900],
-                  text: "Add Product",
-                  size: size,
-                  ontap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AddProduct()));
-                  }),
-              const SizedBox(height: 4),
-              CustomButton1(
-                  colors: [Colors.amber.shade600, Colors.amber.shade900],
-                  text: "Update Home Slider",
-                  size: size,
-                  ontap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const UpdateSlider()));
-                  }),
-              const SizedBox(height: 4),
-              CustomButton1(
-                  colors: [Colors.grey.shade600, Colors.grey.shade900],
-                  text: "Logout",
-                  size: size,
-                  ontap: () {
-                    AuthController.signOutUser(context);
-                  }),
-            ],
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }
