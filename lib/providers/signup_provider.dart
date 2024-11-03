@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:mi_store/controllers/auth_controller.dart';
-import 'package:mi_store/providers/user_provider.dart';
-import 'package:provider/provider.dart';
 
 import '../utils/custom_dialog.dart';
 
